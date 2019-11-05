@@ -31,24 +31,23 @@ public class IdentityUI extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
 
         contentPanel.setLayout(gb);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(50, 100, 50, 100));
 
         // place the customer button
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.insets = new Insets(10, 10, 5, 0);
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(customerButton, c);
         contentPanel.add(customerButton);
 
         // place the clerk button
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(10, 0, 5, 10);
+        c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(clerkButton, c);
         contentPanel.add(clerkButton);
 
         // place the exit button
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(5, 10, 10, 10);
-        c.anchor = GridBagConstraints.CENTER;
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.insets = new Insets(20, 0, 0, 0);
         gb.setConstraints(exitButton, c);
         contentPanel.add(exitButton);
 
