@@ -1,39 +1,42 @@
 package ui;
 
-import delegates.LoginDelegate;
+import delegates.SignUpDelegate;
 
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class LoginUI extends JFrame {
+public class SignUpUI extends JFrame {
     private static final int TEXT_FIELD_WIDTH = 10;
 
-    // components of the login window
+    // components of the sign up window
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JPasswordField confirmPasswordField;
 
     // delegate
-    private LoginDelegate delegate;
+    private SignUpDelegate delegate;
 
-    public LoginUI() {
-        super("Login");
+    public SignUpUI() {
+        super("Sign Up");
     }
 
-    public void showFrame(LoginDelegate delegate) {
+    public void showFrame(SignUpDelegate delegate) {
         this.delegate = delegate;
 
-        JLabel usernameLabel = new JLabel("Username: ");
-        JLabel passwordLabel = new JLabel("Password: ");
+        JLabel usernameLabel = new JLabel("Set Username: ");
+        JLabel passwordLabel = new JLabel("Set Password: ");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password: ");
 
         usernameField = new JTextField(TEXT_FIELD_WIDTH);
         passwordField = new JPasswordField(TEXT_FIELD_WIDTH);
         passwordField.setEchoChar('*');
+        confirmPasswordField = new JPasswordField(TEXT_FIELD_WIDTH);
+        confirmPasswordField.setEchoChar('*');
 
-        JButton signInButton = new JButton("Sign in");
-        JButton signUpButton = new JButton("Sign up");
+        JButton signUpButton = new JButton("Sign Up");
+        JButton cancelButton = new JButton("Cancel");
 
         JPanel contentPanel = new JPanel();
         this.setContentPane(contentPanel);
@@ -43,50 +46,63 @@ public class LoginUI extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
 
         contentPanel.setLayout(gb);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // place the username label
         c.gridwidth = GridBagConstraints.RELATIVE;
-        c.insets = new Insets(10, 10, 5, 0);
+        c.insets = new Insets(0, 10, 5, 0);
         gb.setConstraints(usernameLabel, c);
         contentPanel.add(usernameLabel);
 
         // place the username field
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(10, 0, 5, 10);
+        c.insets = new Insets(0, 0, 5, 10);
         gb.setConstraints(usernameField, c);
         contentPanel.add(usernameField);
 
         // place the password label
         c.gridwidth = GridBagConstraints.RELATIVE;
-        c.insets = new Insets(0, 10, 10, 0);
+        c.insets = new Insets(0, 10, 5, 0);
         gb.setConstraints(passwordLabel, c);
         contentPanel.add(passwordLabel);
 
         // place the password field
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 10, 10);
+        c.insets = new Insets(0, 0, 5, 10);
         gb.setConstraints(passwordField, c);
         contentPanel.add(passwordField);
+
+        // place the confirm password label
+        c.gridwidth = GridBagConstraints.RELATIVE;
+        c.insets = new Insets(0, 10, 10, 0);
+        gb.setConstraints(confirmPasswordLabel, c);
+        contentPanel.add(confirmPasswordLabel);
+
+        // place the confirm password field
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.insets = new Insets(0, 0, 10, 10);
+        gb.setConstraints(confirmPasswordField, c);
+        contentPanel.add(confirmPasswordField);
 
         // place the sign up button
         c.gridwidth = GridBagConstraints.RELATIVE;
         c.insets = new Insets(0, 10, 15, 0);
-        gb.setConstraints(signUpButton, c);
-        contentPanel.add(signUpButton);
+        gb.setConstraints(cancelButton, c);
+        contentPanel.add(cancelButton);
 
         // place the sign in button
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 0, 15, 10);
-        gb.setConstraints(signInButton, c);
-        contentPanel.add(signInButton);
-
+        gb.setConstraints(signUpButton, c);
+        contentPanel.add(signUpButton);
+        
         // register buttons with action event handlers
-        signUpButton.addActionListener(e -> this.delegate.signUp());
-        signInButton.addActionListener(e -> this.delegate.signIn(
+        signUpButton.addActionListener(e -> this.delegate.signUp(
                 usernameField.getText(),
-                String.valueOf(passwordField.getPassword()))
-        );
+                String.valueOf(passwordField.getPassword()),
+                String.valueOf(confirmPasswordField.getPassword())
+        ));
+        cancelButton.addActionListener(e -> this.delegate.cancel());
 
         // anonymous inner class for closing the window
         this.addWindowListener(new WindowAdapter() {
@@ -111,18 +127,16 @@ public class LoginUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        LoginUI loginUI = new LoginUI();
-        loginUI.showFrame(new LoginDelegate() {
+        SignUpUI signUpUI = new SignUpUI();
+        signUpUI.showFrame(new SignUpDelegate() {
             @Override
-            public void signIn(String username, String password) {
+            public void signUp(String username, String password, String confirmPassword) {
 
             }
-
             @Override
-            public void signUp() {
+            public void cancel() {
 
             }
         });
     }
-
 }
