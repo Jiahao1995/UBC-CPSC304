@@ -110,19 +110,4 @@ public class LoginUI extends JFrame {
         usernameField.requestFocus();
     }
 
-    public static void main(String[] args) {
-        LoginUI loginUI = new LoginUI();
-        loginUI.showFrame(new LoginDelegate() {
-            @Override
-            public void signIn(String username, String password) {
-
-            }
-
-            @Override
-            public void signUp() {
-
-            }
-        });
-    }
-
 }

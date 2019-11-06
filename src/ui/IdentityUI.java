@@ -21,7 +21,7 @@ public class IdentityUI extends JFrame {
 
         JButton customerButton = new JButton("Customer");
         JButton clerkButton = new JButton("Clerk");
-        JButton exitButton = new JButton("Exit");
+        JButton signOutButton = new JButton("Sign out");
 
         JPanel contentPanel = new JPanel();
         this.setContentPane(contentPanel);
@@ -48,20 +48,13 @@ public class IdentityUI extends JFrame {
         // place the exit button
         c.gridwidth = GridBagConstraints.RELATIVE;
         c.insets = new Insets(20, 0, 0, 0);
-        gb.setConstraints(exitButton, c);
-        contentPanel.add(exitButton);
+        gb.setConstraints(signOutButton, c);
+        contentPanel.add(signOutButton);
 
         // register buttons with action event handlers
         customerButton.addActionListener(e -> this.delegate.chooseCustomer());
         clerkButton.addActionListener(e -> this.delegate.chooseClerk());
-        exitButton.addActionListener(e -> this.delegate.exit());
-
-        // anonymous inner class for closing the window
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        signOutButton.addActionListener(e -> this.dispose());
 
         // size the window to obtain a best fit for the components
         this.pack();
@@ -74,26 +67,6 @@ public class IdentityUI extends JFrame {
         // make the window visible
         this.setVisible(true);
 
-    }
-
-    public static void main(String[] args) {
-        IdentityUI identityUI = new IdentityUI();
-        identityUI.showFrame(new IdentityDelegate() {
-            @Override
-            public void chooseCustomer() {
-
-            }
-
-            @Override
-            public void chooseClerk() {
-
-            }
-
-            @Override
-            public void exit() {
-
-            }
-        });
     }
 
 }

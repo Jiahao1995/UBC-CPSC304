@@ -102,14 +102,7 @@ public class SignUpUI extends JFrame {
                 String.valueOf(passwordField.getPassword()),
                 String.valueOf(confirmPasswordField.getPassword())
         ));
-        cancelButton.addActionListener(e -> this.delegate.cancel());
-
-        // anonymous inner class for closing the window
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        cancelButton.addActionListener(e -> this.dispose());
 
         // size the window to obtain a best fit for the components
         this.pack();
@@ -126,17 +119,4 @@ public class SignUpUI extends JFrame {
         usernameField.requestFocus();
     }
 
-    public static void main(String[] args) {
-        SignUpUI signUpUI = new SignUpUI();
-        signUpUI.showFrame(new SignUpDelegate() {
-            @Override
-            public void signUp(String username, String password, String confirmPassword) {
-
-            }
-            @Override
-            public void cancel() {
-
-            }
-        });
-    }
 }
