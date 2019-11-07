@@ -61,14 +61,14 @@ public class ViewUI extends JFrame {
         contentPanel.add(resultPane);
 
         // place the cancel button
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.insets = new Insets(0, 100, 0, 30);
+        c.gridwidth = GridBagConstraints.CENTER;
+        c.insets = new Insets(0, 150, 0, 00);
         gb.setConstraints(cancelButton, c);
         contentPanel.add(cancelButton);
 
         // place the select button
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 100);
+        c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(selectButton, c);
         contentPanel.add(selectButton);
 
