@@ -7,123 +7,136 @@ import java.awt.*;
 
 public class ConfirmationUI extends JFrame {
 
-    // delegate
     private ConfirmationDelegate delegate;
 
-    public ConfirmationUI() {
+    private String type;
+    private String fromDate;
+    private String fromTime;
+    private String toDate;
+    private String toTime;
+
+    public ConfirmationUI(
+            String type,
+            String fromDate,
+            String fromTime,
+            String toDate,
+            String toTime) {
         super("Confirmation");
+        this.type = type;
+        this.fromDate = fromDate;
+        this.fromTime = fromTime;
+        this.toDate = toDate;
+        this.toTime = toTime;
     }
 
     public void showFrame(ConfirmationDelegate delegate) {
         this.delegate = delegate;
 
-        JLabel idLabel = new JLabel("ID: ");
-        JLabel makeLabel = new JLabel("Make: ");
-        JLabel modelLabel = new JLabel("Model: ");
-        JLabel yearLabel = new JLabel("Year: ");
-        JLabel colorLabel = new JLabel("Color: ");
-        JLabel odometerLabel = new JLabel("Odometer: ");
-        JLabel typeLabel = new JLabel("Type: ");
-        JLabel locationLabel = new JLabel("Location: ");
-        JLabel cityLabel = new JLabel("City: ");
-        JLabel fromLabel = new JLabel("From: ");
-        JLabel toLabel = new JLabel("To: ");
+//        JLabel idLabel = new JLabel("Vehicle ID: ");
+//        JLabel licenseLabel = new JLabel("Vehicle License: ");
+        JLabel typeLabel = new JLabel("Vehicle Type: " + type);
+        JLabel fromLabel = new JLabel("From: " + fromDate + " " + fromTime);
+        JLabel toLabel = new JLabel("To: " + toDate + " " + toTime);
+//        JLabel makeLabel = new JLabel("Make: ");
+//        JLabel modelLabel = new JLabel("Model: ");
+//        JLabel yearLabel = new JLabel("Year: ");
+//        JLabel colorLabel = new JLabel("Color: ");
+//        JLabel odometerLabel = new JLabel("Odometer: ");
+//        JLabel locationLabel = new JLabel("Location: ");
+//        JLabel cityLabel = new JLabel("City: ");
 
-        JButton confirmButton = new JButton("Confirm");
-        JButton cancelButton = new JButton("Cancel");
+        JButton button = new JButton("Confirm");
 
-        JPanel contentPanel = new JPanel();
-        this.setContentPane(contentPanel);
+        JPanel contentPane = new JPanel();
+        this.setContentPane(contentPane);
 
         // layout components using the GridBag layout manager
         GridBagLayout gb = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        contentPanel.setLayout(gb);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        contentPane.setLayout(gb);
+        contentPane.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        // place the id label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(idLabel, c);
-        contentPanel.add(idLabel);
-
-        // place the make label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(makeLabel, c);
-        contentPanel.add(makeLabel);
-
-        // place the model label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(modelLabel, c);
-        contentPanel.add(modelLabel);
-
-        // place the year label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(yearLabel, c);
-        contentPanel.add(yearLabel);
-
-        // place the color label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(colorLabel, c);
-        contentPanel.add(colorLabel);
-
-        // place the odometer label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(odometerLabel, c);
-        contentPanel.add(odometerLabel);
+//        // place the id label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(idLabel, c);
+//        contentPane.add(idLabel);
+//
+//        // place the license label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(licenseLabel, c);
+//        contentPane.add(licenseLabel);
 
         // place the type label
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(typeLabel, c);
-        contentPanel.add(typeLabel);
-
-        // place the location label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(locationLabel, c);
-        contentPanel.add(locationLabel);
-
-        // place the city label
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(cityLabel, c);
-        contentPanel.add(cityLabel);
+        contentPane.add(typeLabel);
 
         // place the from label
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(fromLabel, c);
-        contentPanel.add(fromLabel);
+        contentPane.add(fromLabel);
 
         // place the to label
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(toLabel, c);
-        contentPanel.add(toLabel);
+        contentPane.add(toLabel);
 
+//        // place the make label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(makeLabel, c);
+//        contentPane.add(makeLabel);
+//
+//        // place the model label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(modelLabel, c);
+//        contentPane.add(modelLabel);
+//
+//        // place the year label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(yearLabel, c);
+//        contentPane.add(yearLabel);
+//
+//        // place the color label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(colorLabel, c);
+//        contentPane.add(colorLabel);
+//
+//        // place the odometer label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(odometerLabel, c);
+//        contentPane.add(odometerLabel);
+//
+//        // place the location label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(locationLabel, c);
+//        contentPane.add(locationLabel);
+//
+//        // place the city label
+//        c.gridwidth = GridBagConstraints.REMAINDER;
+//        c.insets = new Insets(0, 0, 0, 0);
+//        gb.setConstraints(cityLabel, c);
+//        contentPane.add(cityLabel);
 
-        // place the cancel button
-        c.gridwidth = GridBagConstraints.RELATIVE;
-        c.insets = new Insets(20, 100, 0, 0);
-        gb.setConstraints(cancelButton, c);
-        contentPanel.add(cancelButton);
-
-        // place the cancel button
+        // place the button
         c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(20, 20, 0, 100);
-        gb.setConstraints(confirmButton, c);
-        contentPanel.add(confirmButton);
+        c.insets = new Insets(20, 0, 0, 0);
+        gb.setConstraints(button, c);
+        contentPane.add(button);
 
-        // register buttons with action event handlers
-        cancelButton.addActionListener(e -> this.dispose());
-        confirmButton.addActionListener(e -> this.delegate.confirm());
+        // register the button
+        button.addActionListener(e -> this.delegate.confirm());
 
         // size the window to obtain a best fit for the components
         this.pack();
@@ -137,13 +150,4 @@ public class ConfirmationUI extends JFrame {
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        ConfirmationUI confirmationUI = new ConfirmationUI();
-        confirmationUI.showFrame(new ConfirmationDelegate() {
-            @Override
-            public void confirm() {
-
-            }
-        });
-    }
 }

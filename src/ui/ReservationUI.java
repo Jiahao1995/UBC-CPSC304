@@ -1,44 +1,41 @@
 package ui;
 
-import delegates.SearchDelegate;
+import delegates.ReservationDelegate;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SearchUI extends JFrame {
+public class ReservationUI extends JFrame {
     private static final int TEXT_FIELD_WIDTH = 20;
 
-    private SearchDelegate delegate;
+    private ReservationDelegate delegate;
 
     private JTextField typeField;
-    private JTextField locationField;
     private JTextField fromDateField;
     private JTextField fromTimeField;
     private JTextField toDateField;
     private JTextField toTimeField;
 
-    public SearchUI() {
-        super("Search");
+    public ReservationUI() {
+        super("Reserve");
     }
 
-    public void showFrame(SearchDelegate delegate) {
+    public void showFrame(ReservationDelegate delegate) {
         this.delegate = delegate;
 
         JLabel typeLabel = new JLabel("Vehicle Type: ");
-        JLabel locationLabel = new JLabel("Location: ");
         JLabel fromDateLabel = new JLabel("From Date: ");
         JLabel fromTimeLabel = new JLabel("From Time: ");
         JLabel toDateLabel = new JLabel("To Date: ");
         JLabel toTimeLabel = new JLabel("To Time: ");
 
         typeField = new JTextField(TEXT_FIELD_WIDTH);
-        locationField = new JTextField(TEXT_FIELD_WIDTH);
         fromDateField = new JTextField(TEXT_FIELD_WIDTH);
         fromTimeField = new JTextField(TEXT_FIELD_WIDTH);
         toDateField = new JTextField(TEXT_FIELD_WIDTH);
         toTimeField = new JTextField(TEXT_FIELD_WIDTH);
 
-        JButton viewButton = new JButton("View");
+        JButton viewButton = new JButton("Reserve");
 
         JPanel contentPane = new JPanel();
         this.setContentPane(contentPane);
@@ -61,18 +58,6 @@ public class SearchUI extends JFrame {
         c.insets = new Insets(0, 0, 0, 0);
         gb.setConstraints(typeField, c);
         contentPane.add(typeField);
-
-        // place the location label
-        c.gridwidth = GridBagConstraints.CENTER;
-        c.insets = new Insets(0, 0, 0, 10);
-        gb.setConstraints(locationLabel, c);
-        contentPane.add(locationLabel);
-
-        // place the location field
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 0, 0);
-        gb.setConstraints(locationField, c);
-        contentPane.add(locationField);
 
         // place the from date label
         c.gridwidth = GridBagConstraints.CENTER;
@@ -129,9 +114,12 @@ public class SearchUI extends JFrame {
         contentPane.add(viewButton);
 
         // register customer button with action event handler
-        viewButton.addActionListener(e -> this.delegate.view(
+        viewButton.addActionListener(e -> this.delegate.reserve(
                 typeField.getText(),
-                locationField.getText()
+                fromDateField.getText(),
+                fromTimeField.getText(),
+                toDateField.getText(),
+                toTimeField.getText()
         ));
 
         // size the window to obtain a best fit for the components
@@ -147,13 +135,12 @@ public class SearchUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SearchUI searchUI = new SearchUI();
-        searchUI.showFrame(new SearchDelegate() {
+        ReservationUI reservationUI = new ReservationUI();
+        reservationUI.showFrame(new ReservationDelegate() {
             @Override
-            public void view(String type, String location) {
-                
+            public void reserve(String type, String fromDate, String fromTime, String toDate, String toTime) {
+
             }
         });
     }
-
 }

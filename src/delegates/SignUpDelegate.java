@@ -1,5 +1,5 @@
 package delegates;
 
 public interface SignUpDelegate {
-    void signUp(String username, String password, String confirmPassword);
+    void signUp(String phone, String name, String license, String address);
 }
