@@ -32,18 +32,9 @@ public class ConfirmationUI extends JFrame {
     public void showFrame(ConfirmationDelegate delegate) {
         this.delegate = delegate;
 
-//        JLabel idLabel = new JLabel("Vehicle ID: ");
-//        JLabel licenseLabel = new JLabel("Vehicle License: ");
         JLabel typeLabel = new JLabel("Vehicle Type: " + type);
         JLabel fromLabel = new JLabel("From: " + fromDate + " " + fromTime);
         JLabel toLabel = new JLabel("To: " + toDate + " " + toTime);
-//        JLabel makeLabel = new JLabel("Make: ");
-//        JLabel modelLabel = new JLabel("Model: ");
-//        JLabel yearLabel = new JLabel("Year: ");
-//        JLabel colorLabel = new JLabel("Color: ");
-//        JLabel odometerLabel = new JLabel("Odometer: ");
-//        JLabel locationLabel = new JLabel("Location: ");
-//        JLabel cityLabel = new JLabel("City: ");
 
         JButton button = new JButton("Confirm");
 
