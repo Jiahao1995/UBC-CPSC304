@@ -11,7 +11,10 @@ public class VehicleModel {
     private final int odometer;
     private final String branch;
 
-    public VehicleModel(String id, String type, String make, String model, String year, String color, int odometer, String branch) {
+    private String status;
+    private String license;
+
+    public VehicleModel(String id, String type, String make, String model, String year, String color, int odometer, String branch, String status, String license) {
         this.id = id;
         this.type = type;
         this.make = make;
@@ -20,10 +23,20 @@ public class VehicleModel {
         this.color = color;
         this.odometer = odometer;
         this.branch = branch;
+        this.status = status;
+        this.license = license;
     }
 
     public String getBranch() {
         return branch;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getLicense() {
+        return license;
     }
 
     public int getOdometer() {

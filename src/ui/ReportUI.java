@@ -6,6 +6,7 @@ import model.TypeModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 public class ReportUI extends JFrame {
 
@@ -27,13 +28,14 @@ public class ReportUI extends JFrame {
     }
 
     public void showFrame() {
+        DecimalFormat df = new DecimalFormat("#.##");
 
         JLabel dailyLabel = new JLabel("Daily " + name + ": ");
         JLabel typeLabel = new JLabel("Grouped by Type: ");
         JLabel branchLabel = new JLabel("Grouped by Branch: ");
         String s1 = "Total Number: " + totalNum;
         JLabel totalNumLabel = new JLabel(s1);
-        String s2 = "Total Revenue: " + totalRevenue;
+        String s2 = "Total Revenue: " + df.format(totalRevenue);
         JLabel totalRevenueLabel = new JLabel(s2);
 
         String[] dailyNames = { "Branch", "Vehicle Type", "Rent ID" };
@@ -44,27 +46,42 @@ public class ReportUI extends JFrame {
             dailyContents[i][2] = dailyModels[i].getId();
         }
         JTable dailyTable = new JTable(dailyContents, dailyNames);
-        JScrollPane dailyPane = new JScrollPane(dailyTable);
+        JScrollPane dailyPane = new JScrollPane(dailyTable) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(500, 300);
+            }
+        };
 
         String[] typeNames = { "Vehicle Type", "Number", "Revenue" };
         String[][] typeContents = new String[typeModels.length][3];
         for (int i = 0; i < typeModels.length; i++) {
             typeContents[i][0] = typeModels[i].getType();
             typeContents[i][1] = String.valueOf(typeModels[i].getNum());
-            typeContents[i][2] = String.valueOf(typeModels[i].getPrice());
+            typeContents[i][2] = String.valueOf(df.format(typeModels[i].getPrice()));
         }
         JTable typeTable = new JTable(typeContents, typeNames);
-        JScrollPane typePane = new JScrollPane(typeTable);
+        JScrollPane typePane = new JScrollPane(typeTable) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(500, 100);
+            }
+        };
 
         String[] branchNames = { "Branch", "Number", "Revenue" };
         String[][] branchContents = new String[branchModels.length][3];
         for (int i = 0; i < branchModels.length; i++) {
             branchContents[i][0] = branchModels[i].getBranch();
             branchContents[i][1] = String.valueOf(branchModels[i].getNum());
-            branchContents[i][2] = String.valueOf(branchModels[i].getPrice());
+            branchContents[i][2] = String.valueOf(df.format(branchModels[i].getPrice()));
         }
         JTable branchTable = new JTable(branchContents, branchNames);
-        JScrollPane branchPane = new JScrollPane(branchTable);
+        JScrollPane branchPane = new JScrollPane(branchTable) {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(500, 100);
+            }
+        };
 
         JPanel contentPane = new JPanel();
         this.setContentPane(contentPane);

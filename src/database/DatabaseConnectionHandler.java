@@ -2,6 +2,7 @@ package database;
 
 import model.*;
 import oracle.jdbc.proxy.annotation.Pre;
+import ui.ReturnUI;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
@@ -82,7 +83,9 @@ public class DatabaseConnectionHandler {
                         rs.getString("vehicle_year"),
                         rs.getString("color"),
                         rs.getInt("odometer"),
-                        rs.getString("branch"));
+                        rs.getString("branch"),
+                        "",
+                        "");
                 result.add(model);
             }
 
@@ -155,8 +158,9 @@ public class DatabaseConnectionHandler {
                         rs.getString(5),
                         rs.getString(6),
                         rs.getInt(7),
-                        rs.getString(8));
-
+                        rs.getString(8),
+                        "",
+                        "");
             rs.close();
             statement.close();
         } catch (SQLException e) {
@@ -388,14 +392,14 @@ public class DatabaseConnectionHandler {
                     "FROM RENTALS R, VEHICLES V " +
                     "WHERE R.VEHICLE_ID = V.VEHICLE_ID " +
                     "AND R.FROM_DATE = '" + date + "' " +
-                    "GROUP BY V.TYPE_NAME";
+                    "GROUP BY V.BRANCH";
         else
             sql = "SELECT V.BRANCH, COUNT(*) " +
                     "FROM RENTALS R, VEHICLES V " +
                     "WHERE R.VEHICLE_ID = V.VEHICLE_ID " +
                     "AND R.FROM_DATE = '" + date + "' " +
                     "AND V.BRANCH = '" + branch + "' " +
-                    "GROUP BY V.TYPE_NAME";
+                    "GROUP BY V.BRANCH";
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
@@ -484,13 +488,13 @@ public class DatabaseConnectionHandler {
                     "FROM RENTALS R, VEHICLES V, RETURN_BACK RB " +
                     "WHERE R.VEHICLE_ID = V.VEHICLE_ID " +
                     "AND RB.RENT_ID = R.RENT_ID " +
-                    "AND R.FROM_DATE = '" + date + "'";
+                    "AND RB.RETURN_DATE = '" + date + "'";
         else
             sql = "SELECT COUNT(*) " +
                     "FROM RENTALS R, VEHICLES V, RETURN_BACK RB " +
                     "WHERE R.VEHICLE_ID = V.VEHICLE_ID " +
-                    "AND RB.RENT_ID = R.RRENT_ID " +
-                    "AND R.FROM_DATE = '" + date + "' " +
+                    "AND RB.RENT_ID = R.RENT_ID " +
+                    "AND RB.RETURN_DATE = '" + date + "' " +
                     "AND V.BRANCH = '" + branch + "'";
         try {
             Statement statement = connection.createStatement();
@@ -574,14 +578,14 @@ public class DatabaseConnectionHandler {
         ArrayList<BranchModel> models = new ArrayList<>();
         String sql;
         if (branch.equals(""))
-            sql = "SELECT V.TYPE_NAME, COUNT(*), SUM(RB.PRICE) " +
+            sql = "SELECT V.BRANCH, COUNT(*), SUM(RB.PRICE) " +
                     "FROM RETURN_BACK RB, RENTALS R, VEHICLES V " +
                     "WHERE RB.RENT_ID = R.RENT_ID " +
                     "AND R.VEHICLE_ID = V.VEHICLE_ID " +
                     "AND RB.RETURN_DATE = '" + date + "' " +
                     "GROUP BY V.BRANCH";
         else
-            sql = "SELECT V.TYPE_NAME, COUNT(*), SUM(RB.PRICE) " +
+            sql = "SELECT V.BRANCH, COUNT(*), SUM(RB.PRICE) " +
                     "FROM RETURN_BACK RB, RENTALS R, VEHICLES V " +
                     "WHERE RB.RENT_ID = R.RENT_ID " +
                     "AND R.VEHICLE_ID = V.VEHICLE_ID " +
@@ -598,10 +602,166 @@ public class DatabaseConnectionHandler {
                         rs.getDouble(3));
                 models.add(model);
             }
+            rs.close();
+            statement.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
         return models.toArray(new BranchModel[models.size()]);
+    }
+
+    public VehicleTypeModel[] showVehicleTypes() {
+        ArrayList<VehicleTypeModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM VEHICLE_TYPES";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                VehicleTypeModel model = new VehicleTypeModel(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4),
+                        rs.getDouble(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7),
+                        rs.getDouble(8),
+                        rs.getDouble(9));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new VehicleTypeModel[models.size()]);
+    }
+
+    public VehicleModel[] showVehicles() {
+        ArrayList<VehicleModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM VEHICLES";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                VehicleModel model = new VehicleModel(
+                        rs.getString(1),
+                        rs.getString(9),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getInt(7),
+                        rs.getString(10),
+                        rs.getString(8),
+                        rs.getString(2));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new VehicleModel[models.size()]);
+    }
+
+    public CustomerModel[] showCustomers() {
+        ArrayList<CustomerModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM CUSTOMERS";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                CustomerModel model = new CustomerModel(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new CustomerModel[models.size()]);
+    }
+
+    public ReservationModel[] showReservations() {
+        ArrayList<ReservationModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM RESERVATIONS";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                ReservationModel model = new ReservationModel(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new ReservationModel[models.size()]);
+    }
+
+    public RentalModel[] showRentals() {
+        ArrayList<RentalModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM RENTALS";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                RentalModel model = new RentalModel(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9),
+                        rs.getString(10));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new RentalModel[models.size()]);
+    }
+
+    public ReturnModel[] showReturns() {
+        ArrayList<ReturnModel> models = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM RETURN_BACK";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                ReturnModel model = new ReturnModel(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getDouble(6));
+                models.add(model);
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+        return models.toArray(new ReturnModel[models.size()]);
     }
 
 }

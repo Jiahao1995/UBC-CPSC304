@@ -6,6 +6,7 @@ import model.*;
 import ui.*;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -19,11 +20,11 @@ public class SuperRent implements
         SignInDelegate,
         SignUpDelegate,
         RentDelegate,
-        ReturnDelegate {
+        ReturnDelegate,
+        DatabaseDelegate {
 
     private DatabaseConnectionHandler dbHandler;
 
-    // reserve information
     private String reserveType;
     private String reserveFromDate;
     private String reserveFromTime;
@@ -40,6 +41,8 @@ public class SuperRent implements
     private void start() {
         OptionsUI optionsUI = new OptionsUI();
         optionsUI.showFrame(this);
+        DatabaseUI databaseUI = new DatabaseUI();
+        databaseUI.showFrame(this);
     }
 
     @Override
@@ -135,6 +138,19 @@ public class SuperRent implements
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
             String rentId = vm.getId() + dateFormat.format(date);
             dbHandler.rent(rentId, vm.getId(), phone, fromDate, fromTime, toDate, toTime, vm.getOdometer(), cardNo, "");
+            String content = "Rent ID: " + rentId + "\n" +
+                            "Vehicle ID: " + vm.getId() + "\n" +
+                            "Vehicle Type: " + type + "\n" +
+                            "Customer: " + phone + "\n" +
+                            "From: " + fromDate + " " + fromTime + "\n" +
+                            "To: " + toDate + " " + toTime + "\n" +
+                            "Odometer: " + vm.getOdometer() + "\n" +
+                            "Card Number: " + cardNo;
+            JOptionPane.showMessageDialog(
+                    null,
+                    content,
+                    "Receipt",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -175,7 +191,7 @@ public class SuperRent implements
         DailyModel[] dailyModels = dbHandler.dailyRentalReport(date, branch);
         TypeModel[] typeModels = dbHandler.typeRentalReport(date, branch);
         BranchModel[] branchModels = dbHandler.branchRentalReport(date, branch);
-        int num = dbHandler.getRentalNum(date, "");
+        int num = dbHandler.getRentalNum(date, branch);
         double revenue = 0.0;
         ReportUI reportUI = new ReportUI(
                 "Rental",
@@ -315,6 +331,7 @@ public class SuperRent implements
 
     @Override
     public void returnBack(String id, String odometer, String full) {
+        DecimalFormat df = new DecimalFormat("#.##");
         if (!dbHandler.checkRent(id)) {
             JOptionPane.showMessageDialog(
                     null,
@@ -323,7 +340,7 @@ public class SuperRent implements
                     JOptionPane.ERROR_MESSAGE);
         } else {
             Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date time = new Date();
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
             Random random = new Random();
@@ -334,7 +351,7 @@ public class SuperRent implements
                     "Confirmation Number: " + dbHandler.getConfirmation(id) + "\n"
                     + "Date: " + dateFormat.format(date) + "\n"
                     + "Time: " + timeFormat.format(time) + "\n"
-                    + "Price: " + price + "\n"
+                    + "Price: " + df.format(price) + "\n"
                     + " = dailyRate + dailyInsuranceRate * (toDate - fromDate)";
             JOptionPane.showMessageDialog(
                 null,
@@ -348,6 +365,48 @@ public class SuperRent implements
     public void returnBack() {
         ReturnUI returnUI = new ReturnUI();
         returnUI.showFrame(this);
+    }
+
+    @Override
+    public void showVehicleTypes() {
+        VehicleTypeModel[] models = dbHandler.showVehicleTypes();
+        ShowVehicleTypesUI ui = new ShowVehicleTypesUI(models);
+        ui.showFrame();
+    }
+
+    @Override
+    public void showVehicles() {
+        VehicleModel[] models = dbHandler.showVehicles();
+        ShowVehiclesUI ui = new ShowVehiclesUI(models);
+        ui.showFrame();
+    }
+
+    @Override
+    public void showCustomers() {
+        CustomerModel[] models = dbHandler.showCustomers();
+        ShowCustomersUI ui = new ShowCustomersUI(models);
+        ui.showFrame();
+    }
+
+    @Override
+    public void showReservations() {
+        ReservationModel[] models = dbHandler.showReservations();
+        ShowReservationsUI ui = new ShowReservationsUI(models);
+        ui.showFrame();
+    }
+
+    @Override
+    public void showRentals() {
+        RentalModel[] models = dbHandler.showRentals();
+        ShowRentalsUI ui = new ShowRentalsUI(models);
+        ui.showFrame();
+    }
+
+    @Override
+    public void showReturns() {
+        ReturnModel[] models = dbHandler.showReturns();
+        ShowReturnsUI ui = new ShowReturnsUI(models);
+        ui.showFrame();
     }
 
     public static void main(String[] args) {
