@@ -35,8 +35,6 @@ public class ReportUI extends JFrame {
         JLabel branchLabel = new JLabel("Grouped by Branch: ");
         String s1 = "Total Number: " + totalNum;
         JLabel totalNumLabel = new JLabel(s1);
-        String s2 = "Total Revenue: " + df.format(totalRevenue);
-        JLabel totalRevenueLabel = new JLabel(s2);
 
         String[] dailyNames = { "Branch", "Vehicle Type", "Rent ID" };
         String[][] dailyContents = new String[dailyModels.length][3];
@@ -135,11 +133,15 @@ public class ReportUI extends JFrame {
         gb.setConstraints(totalNumLabel, c);
         contentPane.add(totalNumLabel);
 
-        // place the total revenue
-        c.gridwidth = GridBagConstraints.REMAINDER;
-        c.insets = new Insets(0, 0, 10, 0);
-        gb.setConstraints(totalRevenueLabel, c);
-        contentPane.add(totalRevenueLabel);
+        if (name.equals("Return")) {
+            String s2 = "Total Revenue: " + df.format(totalRevenue);
+            JLabel totalRevenueLabel = new JLabel(s2);
+            // place the total revenue
+            c.gridwidth = GridBagConstraints.REMAINDER;
+            c.insets = new Insets(0, 0, 10, 0);
+            gb.setConstraints(totalRevenueLabel, c);
+            contentPane.add(totalRevenueLabel);
+        }
 
         // size the window to obtain a best fit for the components
         this.pack();

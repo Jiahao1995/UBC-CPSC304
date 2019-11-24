@@ -116,6 +116,19 @@ public class SuperRent implements
                             "Card Information",
                             JOptionPane.INFORMATION_MESSAGE);
                     dbHandler.rent(rentId, vm.getId(), rm.getPhone(), rm.getFromDate(), rm.getFromTime(), rm.getToDate(), rm.getToTime(), vm.getOdometer(), cardNo, rm.getConfirmation());
+                    String content = "Rent ID: " + rentId + "\n" +
+                            "Vehicle ID: " + vm.getId() + "\n" +
+                            "Vehicle Type: " + vm.getType() + "\n" +
+                            "Customer: " + rm.getPhone() + "\n" +
+                            "From: " + rm.getFromDate() + " " + rm.getFromTime() + "\n" +
+                            "To: " + rm.getToDate() + " " + rm.getToTime() + "\n" +
+                            "Odometer: " + vm.getOdometer() + "\n" +
+                            "Card Number: " + cardNo;
+                    JOptionPane.showMessageDialog(
+                            null,
+                            content,
+                            "Receipt",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else {
@@ -178,15 +191,23 @@ public class SuperRent implements
 
     @Override
     public void branchRentalReport() {
-        String date = JOptionPane.showInputDialog(
-                null,
-                "Please enter the date: ",
-                "Report Date",
-                JOptionPane.INFORMATION_MESSAGE);
         String branch = JOptionPane.showInputDialog(
                 null,
                 "Please enter the branch: ",
                 "Report Branch",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (!dbHandler.checkBranch(branch)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Branch does not exist. Please check again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String date = JOptionPane.showInputDialog(
+                null,
+                "Please enter the date: ",
+                "Report Date",
                 JOptionPane.INFORMATION_MESSAGE);
         DailyModel[] dailyModels = dbHandler.dailyRentalReport(date, branch);
         TypeModel[] typeModels = dbHandler.typeRentalReport(date, branch);
@@ -227,15 +248,23 @@ public class SuperRent implements
 
     @Override
     public void branchReturnReport() {
-        String date = JOptionPane.showInputDialog(
-                null,
-                "Please enter the date: ",
-                "Report Date",
-                JOptionPane.INFORMATION_MESSAGE);
         String branch = JOptionPane.showInputDialog(
                 null,
                 "Please enter the branch: ",
                 "Report Branch",
+                JOptionPane.INFORMATION_MESSAGE);
+        if (!dbHandler.checkBranch(branch)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Branch does not exist. Please check again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String date = JOptionPane.showInputDialog(
+                null,
+                "Please enter the date: ",
+                "Report Date",
                 JOptionPane.INFORMATION_MESSAGE);
         DailyModel[] dailyModels = dbHandler.dailyReturnReport(date, branch);
         TypeModel[] typeModels = dbHandler.typeReturnReport(date, branch);
@@ -336,29 +365,36 @@ public class SuperRent implements
             JOptionPane.showMessageDialog(
                     null,
                     "Only a rented vehicle can be returned!",
-                    "ERROR",
+                    "Error",
                     JOptionPane.ERROR_MESSAGE);
-        } else {
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date time = new Date();
-            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
-            Random random = new Random();
-            double price = random.nextDouble() * (200 - 50) + 50;
-            dbHandler.returnBack(id, dateFormat.format(date), timeFormat.format(time), odometer, full, price);
+            return;
+        }
+        if (dbHandler.isReturned(id)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "This vehicle has already been returned.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date time = new Date();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        Random random = new Random();
+        double price = random.nextDouble() * (200 - 50) + 50;
+        dbHandler.returnBack(id, dateFormat.format(date), timeFormat.format(time), odometer, full, price);
 
-            String content =
-                    "Confirmation Number: " + dbHandler.getConfirmation(id) + "\n"
+        String content = "Confirmation Number: " + dbHandler.getConfirmation(id) + "\n"
                     + "Date: " + dateFormat.format(date) + "\n"
                     + "Time: " + timeFormat.format(time) + "\n"
                     + "Price: " + df.format(price) + "\n"
                     + " = dailyRate + dailyInsuranceRate * (toDate - fromDate)";
-            JOptionPane.showMessageDialog(
+        JOptionPane.showMessageDialog(
                 null,
-                    content,
-                    "Receipt",
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
+                content,
+                "Receipt",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

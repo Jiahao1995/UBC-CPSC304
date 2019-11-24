@@ -1,10 +1,6 @@
 package database;
 
 import model.*;
-import oracle.jdbc.proxy.annotation.Pre;
-import ui.ReturnUI;
-
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -246,7 +242,43 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public boolean isReturned(String rendId) {
+        boolean result;
+        try {
+            String sql = "SELECT * FROM RETURN_BACK WHERE RENT_ID = '" + rendId + "'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
 
+            result = rs.next();
+
+            rs.close();
+            statement.close();
+
+            return result;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean checkBranch(String branch) {
+        boolean result;
+        try {
+            String sql = "SELECT * FROM VEHICLES WHERE BRANCH = '" + branch + "'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            result = rs.next();
+
+            rs.close();
+            statement.close();
+
+            return result;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
+    }
 
     public void rent(String rentId, String vehicleId, String phone, String fromDate, String fromTime, String toDate, String toTime, int odometer, String cardNo, String confirmation) {
         try {
@@ -288,8 +320,13 @@ public class DatabaseConnectionHandler {
             ps.setDouble(6, price);
             ps.executeUpdate();
 
+            String sql = "UPDATE VEHICLES SET VEHICLE_STATUS = '1' WHERE VEHICLES.VEHICLE_ID = (SELECT RENTALS.VEHICLE_ID FROM RENTALS WHERE RENTALS.RENT_ID = '" + rentId + "')";
+            Statement statement = connection.createStatement();
+            statement.executeQuery(sql);
+
             connection.commit();
 
+            statement.close();
             ps.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
