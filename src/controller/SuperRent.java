@@ -283,6 +283,22 @@ public class SuperRent implements
 
     @Override
     public void view(String type, String location) {
+        if (!type.equals("") && !dbHandler.checkType(type)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Vehicle type does not exist. Please check again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!location.equals("") && !dbHandler.checkBranch(location)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Branch does not exist. Please check again.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         VehicleModel[] result = dbHandler.view(type, location);
         ResultUI resultUI = new ResultUI(result);
         resultUI.showFrame(this);

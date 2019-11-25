@@ -280,6 +280,25 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    public boolean checkType(String type) {
+        boolean result;
+        try {
+            String sql = "SELECT * FROM VEHICLE_TYPES WHERE TYPE_NAME = '" + type + "'";
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            result = rs.next();
+
+            rs.close();
+            statement.close();
+
+            return result;
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            return false;
+        }
+    }
+
     public void rent(String rentId, String vehicleId, String phone, String fromDate, String fromTime, String toDate, String toTime, int odometer, String cardNo, String confirmation) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO RENTALS VALUES (?,?,?,?,?,?,?,?,?,?)");
